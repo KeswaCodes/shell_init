@@ -84,24 +84,27 @@ exit(EXIT_SUCCESS);
 
 if (lineptr[i] == '\n' || lineptr[i] == 32)
 return (NULL);
- 
+
 if (lineptr != NULL)
 {
 if (lineptr[input - 1] == '\n')
 lineptr[input - 1] = '\0';
 }
 
+for (i = 0; lineptr[i] != '\0'; i++)
+{
+if (lineptr[i] == 'e' && lineptr[i + 1] == 'n' && lineptr[i + 2] == 'v')
+print_env();
+}
 
 for (m = 0; m < 4; m++)
 {
-    if (lineptr[m] != "exit"[m])
-        break;
+if (lineptr[m] != "exit"[m])
+break;
 }
 if (m == 4)
 exit(EXIT_SUCCESS);
 
-
- 
 return (lineptr);
 }
 

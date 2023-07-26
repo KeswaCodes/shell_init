@@ -8,6 +8,7 @@
 #include <stddef.h>
 
 extern char **environ;
+int print_env(void);
 int _putchar(char c);
 char *_getenv(const char *name);
 void print_prompt(void);
