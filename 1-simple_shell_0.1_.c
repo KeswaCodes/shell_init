@@ -22,20 +22,23 @@ char *lineptr = NULL, **env_var = environ, **args;
 for (i = 0; ; i++)
 {
 interactive = isatty(STDIN_FILENO);
-if (interactive)
+if (interactive == 1)
 print_prompt();
- 
+
 lineptr = read_input();
+
 if (lineptr == NULL)
 continue;
 
 args = tokenize_args(lineptr);
 if (args == NULL)
 continue;
+
 process = fork();
 if (process == 0)
 {
 execve(args[0], args, env_var);
+if (interactive == 0)
 perror("./hsh");
 free(args);
 exit(EXIT_FAILURE);
@@ -66,10 +69,10 @@ write(1, data, 3);
  */
 char *read_input(void)
 {
-
 char *lineptr = NULL;
 size_t n = 0, i = 0;
 ssize_t input;
+int m;
 
 input = getline(&lineptr, &n, stdin);
 
@@ -87,8 +90,21 @@ if (lineptr != NULL)
 if (lineptr[input - 1] == '\n')
 lineptr[input - 1] = '\0';
 }
+
+
+for (m = 0; m < 4; m++)
+{
+    if (lineptr[m] != "exit"[m])
+        break;
+}
+if (m == 4)
+exit(EXIT_SUCCESS);
+
+
+ 
 return (lineptr);
 }
+
 /**
  *tokenize_args- tokenizes the arguments
  *@lineptr: line read from stdin
@@ -113,11 +129,11 @@ if (args == NULL)
 return (NULL);
 
 /*tokenize arguments*/
-tokens = strtok(lineptr, " -");
+tokens = strtok(lineptr, " ");
 while (tokens != NULL)
 {
 args[j] = tokens;
-tokens = strtok(NULL, " -");
+tokens = strtok(NULL, " ");
 j++;
 }
 args[j] = NULL;

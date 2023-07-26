@@ -1,4 +1,10 @@
-simple_shell_project
 allowed_functions
-alx_test_suite
-test_folder
+alx_test_suite/
+test_folder/
+leak_check
+test_ls_2
+2-simple_shell_0.2.c
+_getenv.c
+0-getenv.c
+_getenv
+_test_env

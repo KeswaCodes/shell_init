@@ -5,8 +5,11 @@
 #include <sys/wait.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
+
 extern char **environ;
 int _putchar(char c);
+char *_getenv(const char *name);
 void print_prompt(void);
 char *read_input(void);
 char **tokenize_args(char *lineptr);
