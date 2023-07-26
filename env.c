@@ -7,14 +7,15 @@
 
 int print_env(void)
 {
+char **env_var = environ;
 int i = 0, j = 0;
 
-while (environ[i] != NULL)
+while (env_var[i] != NULL)
 {
 j = 0;
-while (environ[i][j] != '\0')
+while (env_var[i][j] != '\0')
 {
-if (_putchar(environ[i][j]))
+if (_putchar(env_var[i][j]))
 j++;
 else
 perror("Error printing variable");

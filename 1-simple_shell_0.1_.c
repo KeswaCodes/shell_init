@@ -79,6 +79,7 @@ input = getline(&lineptr, &n, stdin);
 if (input == -1)
 {
 _putchar('\n');
+free(lineptr);
 exit(EXIT_SUCCESS);
 }
 
@@ -103,7 +104,10 @@ if (lineptr[m] != "exit"[m])
 break;
 }
 if (m == 4)
+{
+free(lineptr);
 exit(EXIT_SUCCESS);
+}
 
 return (lineptr);
 }
