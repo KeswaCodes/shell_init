@@ -23,11 +23,16 @@ for (i = 0; ; i++)
 {
 print_prompt();
 lineptr = read_input();
+if (lineptr == NULL)
+continue;
+
 while (lineptr[k] != '\0')
 k++;
 
 k += 1;
 args = tokenize_args(lineptr, k);
+if (args == NULL)
+continue;
 process = fork();
 if (process == 0)
 {
@@ -70,8 +75,11 @@ ssize_t input;
 input = getline(&lineptr, &n, stdin);
 
 if (input == -1)
-return (NULL);
+exit(EXIT_SUCCESS);
 
+if (lineptr[0] == '\n')
+return (NULL);
+ 
 if (lineptr != NULL)
 {
 if (lineptr[input - 1] == '\n')
@@ -80,7 +88,7 @@ lineptr[input - 1] = '\0';
 return (lineptr);
 }
 /**
- *tokenize_args: tokenizes the arguments
+ *tokenize_args- tokenizes the arguments
  *@lineptr: line read from stdin
  *@lineptr_len: length of the line read
  *Return: pointer to pointer of tokenized string
@@ -89,6 +97,11 @@ char **tokenize_args(char *lineptr, int lineptr_len)
 {
 char **args, *tokens;
 int j = 0;
+
+ if (lineptr == NULL || lineptr_len == 0)
+   return NULL;
+ 
+
 /*malloc the space for the arguments*/
 args = malloc(sizeof(char *) * lineptr_len);
 if (args == NULL)
