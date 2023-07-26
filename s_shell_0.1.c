@@ -79,16 +79,12 @@ input = getline(&lineptr, &n, stdin);
 if (input == -1)
 {
 _putchar('\n');
-free(lineptr);
 exit(EXIT_SUCCESS);
 }
 
-if (lineptr[i] == '\n')
+if (lineptr[i] == '\n' || lineptr[i] == 32)
 return (NULL);
 
-if (lineptr[0] == ' ')
-return (NULL);
- 
 if (lineptr != NULL)
 {
 if (lineptr[input - 1] == '\n')
@@ -107,11 +103,7 @@ if (lineptr[m] != "exit"[m])
 break;
 }
 if (m == 4)
-{
-free(lineptr);
 exit(EXIT_SUCCESS);
-}
-
 
 return (lineptr);
 }
