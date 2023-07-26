@@ -1,6 +1,6 @@
 #include "main.h"
 /* function tokenizes arguments */
-char **tokenize_args(char *lineptr, int lineptr_len);
+char **tokenize_args(char *lineptr);
 
 /* function prints a prompt*/
 void print_prompt(void);
@@ -16,21 +16,20 @@ char *read_input(void);
  */
 int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 {
-int i, status, process, k = 0;
+int i, status, process, interactive;
 char *lineptr = NULL, **env_var = environ, **args;
 
 for (i = 0; ; i++)
 {
+interactive = isatty(STDIN_FILENO);
+if (interactive)
 print_prompt();
+ 
 lineptr = read_input();
 if (lineptr == NULL)
 continue;
 
-while (lineptr[k] != '\0')
-k++;
-
-k += 1;
-args = tokenize_args(lineptr, k);
+args = tokenize_args(lineptr);
 if (args == NULL)
 continue;
 process = fork();
@@ -69,7 +68,7 @@ char *read_input(void)
 {
 
 char *lineptr = NULL;
-size_t n = 0;
+size_t n = 0, i = 0;
 ssize_t input;
 
 input = getline(&lineptr, &n, stdin);
@@ -80,8 +79,7 @@ _putchar('\n');
 exit(EXIT_SUCCESS);
 }
 
-
-if (lineptr[0] == '\n')
+if (lineptr[i] == '\n' || lineptr[i] == 32)
 return (NULL);
  
 if (lineptr != NULL)
@@ -94,29 +92,32 @@ return (lineptr);
 /**
  *tokenize_args- tokenizes the arguments
  *@lineptr: line read from stdin
- *@lineptr_len: length of the line read
  *Return: pointer to pointer of tokenized string
  */
-char **tokenize_args(char *lineptr, int lineptr_len)
+char **tokenize_args(char *lineptr)
 {
 char **args, *tokens;
-int j = 0;
+int j = 0, i = 0;
 
- if (lineptr == NULL || lineptr_len == 0)
-   return NULL;
- 
+if (lineptr == NULL)
+return (NULL);
+
+while (lineptr[i] != '\0')
+i++;
+
+i += 1;
 
 /*malloc the space for the arguments*/
-args = malloc(sizeof(char *) * lineptr_len);
+args = malloc(sizeof(char *) * i);
 if (args == NULL)
 return (NULL);
 
 /*tokenize arguments*/
-tokens = strtok(lineptr, "");
+tokens = strtok(lineptr, " -");
 while (tokens != NULL)
 {
 args[j] = tokens;
-tokens = strtok(NULL, "");
+tokens = strtok(NULL, " -");
 j++;
 }
 args[j] = NULL;

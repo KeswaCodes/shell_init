@@ -9,5 +9,5 @@ extern char **environ;
 int _putchar(char c);
 void print_prompt(void);
 char *read_input(void);
-char **tokenize_args(char *lineptr, int lineptr_len);
+char **tokenize_args(char *lineptr);
 #endif
